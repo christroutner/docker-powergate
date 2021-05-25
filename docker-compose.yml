@@ -1,5 +1,6 @@
 ipfs:
   image: ipfs/go-ipfs:v0.7.0
+  container_name: ipfs
   command: ["daemon", "--migrate=true", "--enable-pubsub-experiment"]
   ports:
     - 5001:5001
@@ -9,6 +10,7 @@ ipfs:
 
 lotus:
   image: textile/lotus:v1.8.0
+  container_name: lotus
   volumes:
     - ./lotus-data:/data
   environment:
@@ -20,3 +22,26 @@ lotus:
     - 1234:1234
     - 5678:5678
   #restart: unless-stopped
+
+powergate:
+  image: textile/powergate:latest
+  container_name: powergate
+  ports:
+    - 8889:8889
+    - 8888:8888
+    - 6060:6060
+    - 5002:5002
+    - 6002:6002
+    - 7000:7000
+  links:
+    - ipfs
+    - lotus
+  environment:
+    - POWD_LOTUSHOST=/dns4/lotus/tcp/1234
+    - POWD_IPFSAPIADDR=/dns4/ipfs/tcp/5001
+    - POWD_LOTUSTOKENFILE=/root/lotus/.lotus/token
+    - POWD_REPOPATH=/root/powergate/.powergate
+  #    restart: unless-stopped
+  volumes:
+    - ./powergate-data:/root/powergate
+    - ./lotus-data:/root/lotus
