@@ -1,0 +1,22 @@
+ipfs:
+  image: ipfs/go-ipfs:v0.7.0
+  command: ["daemon", "--migrate=true", "--enable-pubsub-experiment"]
+  ports:
+    - 5001:5001
+  volumes:
+    - ./ipfs-data:/data/ipfs
+  #restart: unless-stopped
+
+lotus:
+  image: textile/lotus:v1.8.0
+  volumes:
+    - ./lotus-data:/data
+  environment:
+    - LOTUS_API_LISTENADDRESS=/ip4/0.0.0.0/tcp/1234/http
+    - LOTUS_CLIENT_USEIPFS=true
+    - LOTUS_CLIENT_IPFSUSEFORRETRIEVAL=true
+    - LOTUS_CLIENT_IPFSMADDR=/dns4/ipfs/tcp/5001
+  ports:
+    - 1234:1234
+    - 5678:5678
+  #restart: unless-stopped
