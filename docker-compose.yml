@@ -10,6 +10,13 @@ ipfs:
 
 lotus:
   image: textile/lotus:v1.8.0
+  command:
+    [
+      "lotus",
+      "daemon",
+      "--import-snapshot",
+      "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car",
+    ]
   container_name: lotus
   volumes:
     - ./lotus-data:/data
