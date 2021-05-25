@@ -9,3 +9,5 @@ Make the following directories in the same directory as this repository:
 - ipfs-data
 - lotus-data
 - powergate-data
+
+Run the containers with `docker-compose up -d`. The Lotus node will download a 30GB snapshot and then finish syncing to the tip of the chain. After this first sync has completed, the lotus command in the `docker-compose.yml` file can be commented out.
